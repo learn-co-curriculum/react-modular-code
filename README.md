@@ -31,8 +31,7 @@ Developers separate their code into modules for many reasons:
 
 ## Modularizing React Code
 
-React makes the modularization of code easy by introducing the component
-structure.
+React makes use of JavaScript's component structure, which we haven't been introduced to yet. Components make the modularization of code easier. It looks something like this:
 
 ```js
 class Hogwarts extends React.Component {
