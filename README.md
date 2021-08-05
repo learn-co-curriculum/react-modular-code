@@ -18,7 +18,7 @@ is responsible for a feature or specific functionality.
 
 Developers separate their code into modules for many reasons:
 
-- **Adhere to the single-responsiblity principle**
+- **Adhere to the single-responsibility principle**
   - Each module is responsible for accomplishing a certain piece of
     functionality, or adding a specific feature to the application
 - **Easier to navigate**
@@ -34,22 +34,22 @@ Developers separate their code into modules for many reasons:
 React makes the modularization of code easy by introducing the component
 structure.
 
-```js
+```jsx
 class Hogwarts extends React.Component {
-	render() {
-		return (
-			<div className="Hogwarts">
-				"Harry. Did you put your name in the Goblet of Fire?"
-			</div>
-		);
-	}
+  render() {
+    return (
+      <div className="Hogwarts">
+        "Harry. Did you put your name in the Goblet of Fire?"
+      </div>
+    );
+  }
 }
 ```
 
 It's standard practice to give each of these components their own file. It is
 not uncommon to see a React program file tree that looks something like this:
 
-```bash
+```txt
 ├── README.md
 ├── public
 └── src
@@ -68,26 +68,26 @@ On a simplified level, `import` and `export` enable us to use code from one file
 in other locations across our projects, which becomes increasingly important as
 we build out larger applications. Let's look at how we can do this.
 
-#### Export
+### Export
 
 Exporting a component, or module of code, allows us to call upon that `export`
 in other files, and use the embedded code within other modules. There are two
 ways to `export` code in JavaScript: we can use the `export default` syntax or
 we can explicitly name our exports.
 
-###### Export Default
+#### Export Default
 
 We can only use `export default` once per module. The syntax allows us to
 disregard naming conventions when we want to import the given module.
 
 For example:
 
-```js
+```jsx
 // src/houses/HagridsHouse.js
-import React from 'react';
+import React from "react";
 
 function whoseHouse() {
-	console.log(`HAGRID'S HOUSE!`);
+  console.log(`HAGRID'S HOUSE!`);
 }
 
 export default whoseHouse;
@@ -99,7 +99,7 @@ importing it. For example, `import nameThisAnything from './HagridsHouse.js'`
 will provide us with the same code as
 `import whoseHouse from './HagridsHouse.js'` -- which is called aliasing!
 
-```js
+```jsx
 // src/Hogwarts.js
 import whoseHouse from './HagridsHouse.js'
 import ReactDOM from 'react-dom'
@@ -116,41 +116,41 @@ render() {
 If we can `export default` functions, we can `export default` components! like
 so...
 
-```js
+```jsx
 // src/houses/Hufflepuff.js
-import React from 'react';
+import React from "react";
 
 export default class Hufflepuff extends React.Component {
-	render() {
-		return <div>NOBODY CARES ABOUT US</div>;
-	}
+  render() {
+    return <div>NOBODY CARES ABOUT US</div>;
+  }
 }
 ```
 
 Then, we can import the entire component to any other file in our application,
 using whatever naming convention that we see fit:
 
-```js
+```jsx
 // src/Hogwarts.js
-import React from 'react';
-import HooflePoof from './houses/Hufflepuff.js';
+import React from "react";
+import HooflePoof from "./houses/Hufflepuff.js";
 
 export default class Hogwarts extends React.Component {
-	render() {
-		return (
-			<div>
-				<HooflePoof />
-				//> Will render `NOBODY CARES ABOUT US`, even though we renamed `Hufflepuff`
-				// to `HooflePoof`
-			</div>
-		);
-	}
+  render() {
+    return (
+      <div>
+        <HooflePoof />
+        //> Will render `NOBODY CARES ABOUT US`, even though we renamed `Hufflepuff`
+        // to `HooflePoof`
+      </div>
+    );
+  }
 }
 ```
 
 You will commonly see a slightly different way of writing this:
 
-```js
+```jsx
 // src/Hogwarts.js
 import React from 'react'
 import HooflePoof from './houses/Hufflepuff.js'
@@ -165,32 +165,32 @@ export default Hogwarts
 Moving the `export default` to the bottom can make it easier to find exactly
 what a file is exporting.
 
-###### Named Exports
+#### Named Exports
 
 With named exports, we can export multiple pieces of code from within a module,
 allowing us to call on them explicitly when we `import`.
 
 Named exports allow us to export several specific things at once:
 
-```js
+```jsx
 // src/houses/Gryffindor.js
 export function colors() {
-	console.log('Scarlet and Gold');
+  console.log("Scarlet and Gold");
 }
 
 function values() {
-	console.log('Courage, Bravery, Nerve and Chivalry');
+  console.log("Courage, Bravery, Nerve and Chivalry");
 }
 
 export function gryffMascot() {
-	console.log('The Lion');
+  console.log("The Lion");
 }
 ```
 
 We can then `import` exports from a file using their original name, or
 by explicitly assigning them a new one. Let's look at an example:
 
-```js
+```jsx
 // src/Hogwarts.js
 import * from './houses/Gryffindor.js'
 
@@ -204,32 +204,29 @@ values()
 // > ReferenceError: values is not defined
 ```
 
-We will go into detail on the `import` line in just a moment, but briefly: 
-`import * from './houses/Gryffindor.js'` imports everything from `./houses/Gryffindor.js` 
-that is _exported_. Since we did not explicitly export `values` in our `Gryffindor.js` 
-file, we were unable to have access to the function in `Hogwarts.js`. Other 
+We will go into detail on the `import` line in just a moment, but briefly:
+`import * from './houses/Gryffindor.js'` imports everything from `./houses/Gryffindor.js`
+that is _exported_. Since we did not explicitly export `values` in our `Gryffindor.js`
+file, we were unable to have access to the function in `Hogwarts.js`. Other
 imported functions _within_ `Hogwarts.js` can still call `values`, though.
 
 We can also move named exports to the bottom of a file:
 
-```js
+```jsx
 // src/houses/Gryffindor.js
 function colors() {
-  console.log("Scarlet and Gold")
+  console.log("Scarlet and Gold");
 }
 
 function values() {
-  console.log("Courage, Bravery, Nerve and Chivalry")
+  console.log("Courage, Bravery, Nerve and Chivalry");
 }
 
 function gryffMascot() {
-  console.log("The Lion")
+  console.log("The Lion");
 }
 
-export {
-  colors,
-  gryffMascot
-}
+export { colors, gryffMascot };
 ```
 
 ## Import
@@ -242,14 +239,14 @@ are trying to access and how we exported it.
 In order to import a module into another file, we write out the relative path to
 the file that we are trying to get access to. Let's look at some examples:
 
-#### import \* from
+### import \* from
 
 `import * from` imports all of the functions that have been exported from a
 given module. This syntax looks like:
 
-```js
+```jsx
 // src/Hogwarts.js
-import * as GryffFunctions from './houses/Gryffindor.js';
+import * as GryffFunctions from "./houses/Gryffindor.js";
 
 GryffFunctions.colors();
 // > 'Scarlet and Gold'
@@ -258,7 +255,7 @@ GryffFunctions.colors();
 We have the option to rename the module when we `import` it, as we did above.
 However, importing all of the functions by name is also an option:
 
-```js
+```jsx
 // src/Hogwarts.js
 import * from './houses/Gryffindor.js'
 
@@ -266,17 +263,17 @@ colors()
 // > 'Scarlet and Gold'
 ```
 
-#### import {function()} from
+### import {function()} from
 
 `import { function() } from` allows us to grab a specific function by name, and
 use that function within the body of a new module.
 
 We're able to reference the function imported by its previously declared name:
 
-```js
+```jsx
 // src/Hogwarts.js
-import { colors } from './houses/Gryffindor.js';
-import { gryffMascot } from './houses/Gryffindor.js';
+import { colors } from "./houses/Gryffindor.js";
+import { gryffMascot } from "./houses/Gryffindor.js";
 
 colors();
 // > 'Scarlet and Gold'
@@ -287,10 +284,10 @@ gryffMascot();
 
 ...or rename it inside of our `import` statement:
 
-```js
+```jsx
 // src/Hogwarts.js
-import { colors } from './houses/Gryffindor.js';
-import { gryffMascot as mascot } from './houses/Gryffindor.js';
+import { colors } from "./houses/Gryffindor.js";
+import { gryffMascot as mascot } from "./houses/Gryffindor.js";
 
 colors();
 // > 'Scarlet and Gold'
@@ -301,26 +298,26 @@ mascot();
 
 ## Importing Node Modules
 
-```js
+```jsx
 // src/Hogwarts.js
 
-import React from 'react';
-import Gryffindor from './houses/Gryffindor';
-import Ravenclaw from './houses/Ravenclaw';
-import Hufflepuff from './houses/Hufflepuff';
-import Slytherin from './houses/Slytherin';
+import React from "react";
+import Gryffindor from "./houses/Gryffindor";
+import Ravenclaw from "./houses/Ravenclaw";
+import Hufflepuff from "./houses/Hufflepuff";
+import Slytherin from "./houses/Slytherin";
 
 export default class Hogwarts extends React.Component {
-	render() {
-		return (
-			<div>
-				<Gryffindor />
-				<Ravenclaw />
-				<Hufflepuff />
-				<Slytherin />
-			</div>
-		);
-	}
+  render() {
+    return (
+      <div>
+        <Gryffindor />
+        <Ravenclaw />
+        <Hufflepuff />
+        <Slytherin />
+      </div>
+    );
+  }
 }
 ```
 
